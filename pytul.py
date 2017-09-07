@@ -1,3 +1,7 @@
+import builtins
+from itertools import count
+
+
 def sum_range(*args):
 	if len(args) == 1:
 		return _sum_range_limit(*args)
@@ -12,3 +16,9 @@ def _sum_range_full(start, stop, step=None):
 	if step:
 		return _sum_range_full(start // step, stop // step) * step
 	return _sum_range_limit(stop) - _sum_range_limit(start)
+
+
+def enumerate(iterable, start=0, reverse=False):
+    return (zip(count(start or len(iterable) - 1, -1), reversed(iterable))
+            if reverse else builtins.enumerate(iterable, start))
+
