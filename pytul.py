@@ -19,6 +19,24 @@ def _sum_range_full(start, stop, step=None):
 
 
 def enumerate(iterable, start=0, reverse=False):
+    """Reverse works only for sequences."""
     return (zip(count(start or len(iterable) - 1, -1), reversed(iterable))
             if reverse else builtins.enumerate(iterable, start))
+
+
+class ReversibleEnumerate(object):
+    def __init__(self, iterable, start=0, reverse=False):
+        self._iterable = iterable
+        self._start = start
+        self.iterable = iter(iterable if not reverse else reversed(iterable))
+        self.counter = count(start) if not reverse else count(start or len(iterable) - 1, -1)
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        return next(self.counter), next(self.iterable)
+    
+    def __reversed__(self):
+        return type(self)(self._iterable, self._start, reverse=True)
 
