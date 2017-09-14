@@ -1,10 +1,18 @@
-class suppress(object):
-    def __init__(self, *exceptions):
-        self.exceptions = set(exceptions)
+from typing import Type
 
-    def __enter__(self):
+
+class suppress(object):
+    def __init__(self, *exceptions):  # type: (Type) -> None
+        """Stores given exception types.
+
+        :param exceptions: Exception types to be suppressed.
+        """
+        self.exceptions = exceptions
+
+    def __enter__(self):  # type: () -> None
         """Does nothing."""
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        return exc_type is None or exc_type in self.exceptions
+        """Throws if raised exception type is not a subtype of given exceptions to suppress."""
+        return exc_type is None or issubclass(exc_type, self.exceptions)
 
