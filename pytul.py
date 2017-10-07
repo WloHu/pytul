@@ -1,6 +1,11 @@
 import builtins
 from itertools import count
 
+from itertools import zip_longest, islice, chain, repeat, cycle
+
+def merge(*sequences, fillvalue=None):
+    for slice in zip_longest(*sequences, fillvalue=fillvalue):
+        yield from slice
 
 def sum_range(*args):
 	if len(args) == 1:
